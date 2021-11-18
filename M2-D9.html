@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<!--
+IMPORTANT:
+Start from the previous Musical assignment project you've created on M2-D2
+    
+ASSIGNMENT RULES
+- The project must be pushed to a new repository and linked in EduFlow by the end of the day.
+- You can google / use StackOverflow BUT we suggest you to use just the material provided and documentation.
+- To test the page, open it with your browser and inspect it with developer tools / device emulator.
+- Use Bootstrap4.6 classes to create the page.
+- Use containers, rows and cols in order to achieve a great responsive layout.
+
+NOTE:
+Most of the requirements in this exercises reference a bootstrap's functionality or component. 
+Make sure you check the documentation before creting anything custom.
+-->
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <!-- IMPORT ALL THE BOOSTRAP RELATED CSS & SCRIPTS-->
+
+    <style>
+        /* PREVIOUS CODE */
+    </style>
+<script>(function addTranscript() {
+  function debounce(callback, wait, immediate = false) {
+    let timeout = null;
+
+    return function () {
+      const callNow = immediate && !timeout;
+      const next = () => callback.apply(this, arguments);
+
+      clearTimeout(timeout);
+      timeout = setTimeout(next, wait);
+
+      if (callNow) {
+        next();
+      }
+    };
+  }
+
+  function waitFor(selector, callback, timeout) {
+    const element = document.querySelector(selector);
+    if (element) {
+      callback(element);
+    } else {
+      if (timeout) {
+        return window.setTimeout(() => {
+          return window.requestAnimationFrame(() => {
+            waitFor(selector, callback);
+          });
+        }, timeout);
+      }
+      return window.requestAnimationFrame(() => {
+        waitFor(selector, callback);
+      });
+    }
+  }
+
+  function onVideoChange(cb) {
+    const debouncedCallback = debounce(cb, 200);
+    waitFor(
+      "ytd-player",
+      function handlePlayer(player) {
+        const video = document.querySelector(".html5-main-video");
+        if (!video) {
+          setTimeout(() => handlePlayer(player), 1000);
+          return;
+        }
+        debouncedCallback();
+        const observer = new MutationObserver(debouncedCallback);
+        observer.observe(video, {
+          childList: false,
+          subtree: false,
+          attributes: true,
+        });
+      },
+      100
+    );
+  }
+
+  function renderTranscript() {
+    const player = document.querySelector("ytd-player")?.getPlayer();
+    if (!player) {
+      return;
+    }
+
+    const { isLive, video_id } = player.getVideoData();
+    const options = player.getOptions();
+    const hasCaptions = options.includes("captions");
+
+    if (!hasCaptions || isLive) {
+      document.querySelector("#transcript-info")?.remove();
+      return;
+    }
+
+    document.querySelector("#transcript-info")?.remove();
+
+    const wrapper = document.createElement("div");
+    wrapper.id = `transcript-info`;
+    wrapper.style = `
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 8px;
+    `.replace("\n", " ");
+
+    const a = document.createElement("a");
+    a.setAttribute("href", `https://video-insights.com/en/video/${video_id}`);
+    a.setAttribute("target", "_blank");
+    a.setAttribute(
+      "style",
+      `
+        color: var(--yt-spec-call-to-action);
+        background-color: transparent;
+        text-transform: uppercase;
+        border: 1px solid var(--yt-spec-call-to-action);
+        padding: var(--yt-button-padding-minus-border);
+        width: var(--yt-paper-button-width, auto);
+        height: var(--yt-paper-button-height, auto);
+        border-radius: inherit;
+        text-align: center;
+        min-width: var(--yt-paper-button-min-width, var(--ytd-paper-button-min-width, 5.14em));
+        font-size: var(--yt-paper-button-font-size, inherit);
+        transition: var(--shadow-transition_-_transition);
+        margin: var(--yt-button-margin, 0 0.29em);
+        text-transform: uppercase;
+        vertical-align: middle;
+        white-space: nowrap;
+        font-size: var(--ytd-tab-system_-_font-size);
+        font-weight: var(--ytd-tab-system_-_font-weight);
+        letter-spacing: var(--ytd-tab-system_-_letter-spacing);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: var(--yt-paper-button-min-width, var(--ytd-paper-button-min-width, 5.14em));
+        cursor: pointer;
+        -webkit-font-smoothing: var(--paper-font-common-base_-_-webkit-font-smoothing);
+      `.replace(/(\r\n|\n|\r|\s)/gm, "")
+    );
+    a.appendChild(document.createTextNode("Transcript "));
+    wrapper.appendChild(a);
+
+    const root = document.querySelector("ytd-video-owner-renderer");
+    root?.appendChild(wrapper);
+  }
+
+  onVideoChange(renderTranscript);
+})()</script></head>
+
+<body>
+
+    <!-- EXERCISE 1
+        Create a Jumbotron section with a quick explanation / image of the website.
+        Make it appear with a fade-in animation effect when the page loads.
+    -->
+
+    <!-- EXERCISE 2
+        Use a Bootstrap Card to contain every album in the favorite list you previously created.
+        Use the elements of a card bootstrap provides you with to display nicely the album informations such as: album title, artist, year, etc..
+    -->
+
+    <!-- EXERCISE 3
+        Foreach album in the favorite list, place a badge on the top-left corner of the album with the genre of the music
+    -->
+
+    <!-- EXERCISE 4
+        Create a new section with an album tracklist inside a Bootstrap table.
+        The row colors of the table must be alternated.
+
+        There should be a column for the track order number, one for the title and one for the track duration.
+        (If you want, you can also add extra columns)
+    -->
+
+    <!-- EXERCISE 5
+        Add a DELETE bootstrap button at the end of each row of the tracklist. 
+        Attach the functionality to remove its row when it gets clicked. (Requires DOM manipulation)  
+
+        ## EXTRA CSS CHALLENGE ##
+        Make only one button visible at a time, for each row, when the single row gets hovered. 
+        Animate it with a fade-in effect upon the user hovering and fade-out when he/she goes away from it.
+    -->
+
+    <!-- EXERCISE 6
+        Add an "Add Track" button under the tracklist of the album. 
+        It should have a nice shadow transition when its hovered (with the box-shadow property) 
+        to look like as if the button was elevating itself.
+    -->
+
+    <!-- EXERCISE 7
+        On the click of "Add Track" button, a modal should appear.
+        (check in the documentation the modal + button example)
+        
+        The modal shall contain single input fields (avoid using a <form> to wrap the inputs) with:
+        - Track number
+        - Track title
+        - Track duration
+
+        The fields should be inside an Input Group and divided in 2 columns.
+    -->
+
+    <!-- ############### -->
+    <!-- ###  EXTRA  ### -->
+    <!-- ############### -->
+
+    <!-- EXERCISE 8
+        The modal should contain 2 buttons at the bottom:
+        - Add => Adds a new track in the tracklist with the data of the input fields.
+        - Close => closes the modal
+
+        https://getbootstrap.com/docs/4.6/components/alerts/
+        [EXTRA] Make the message disappear after 5 seconds
+        https://www.w3schools.com/jsref/met_win_settimeout.asp
+    -->
+
+    <!-- EXERCISE 9
+        Alert the user with a success message when the track gets added, or when a track gets deleted.
+     -->
+
+    <!-- EXERCISE 10
+        Considering the "Add Track" functionality that you've created on ex. 8: 
+         - The new list-element added to the list should appear with a fade-in effect
+     -->
+
+    <!-- EXERCISE 11
+        Considering the button you've created in ex. 5 that deletes the row:
+        Add a fade-out effect to the row before it gets removed, using a CSS transition effect
+    -->
+
+
+</body></html>
