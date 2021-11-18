@@ -16,6 +16,12 @@
           animation: fadeIn 3s forwards;
         }
 
+        .btn-danger {
+          display: none;
+        }
+        tr:hover .btn-danger {
+          display: block;
+        }
 
         @keyframes fadeIn {
           from { 
@@ -139,7 +145,7 @@
           </nav>
 
           <!--  Album Traclist -->
-          <section class="container w-50 pt-5">
+          <section class="container w-50 py-5">
             <h4 class="text-center">Album tracklist</h4>
             <table class="table">
               <thead>
@@ -170,6 +176,18 @@
                 </tr>
                 <tr>
                   <th scope="row">4</th>
+                  <td>lorem ipsum</td>
+                  <td>4:26</td>
+                  <td><button type="button" class="btn btn-danger">Delete</button></td>
+                </tr>
+                <tr>
+                  <th scope="row">5</th>
+                  <td>lorem ipsum</td>
+                  <td>4:26</td>
+                  <td><button type="button" class="btn btn-danger">Delete</button></td>
+                </tr>
+                <tr>
+                  <th scope="row">6</th>
                   <td>lorem ipsum</td>
                   <td>4:26</td>
                   <td><button type="button" class="btn btn-danger">Delete</button></td>
